@@ -1,11 +1,12 @@
 import React from "react";
-import { createRoot } from 'react-dom/client';
+import ReactDOM from "react-dom";
 import App from '../App';
 
 it('shows a comment box', () => {
-    const root = createRoot(document.createElement('div'));
+    const div = document.createElement('div');
 
-    root.render(<App />);
+    ReactDOM.render(<App />, div);
+    expect(div.innerHTML).toContain('Comment Box');
 
-    root.unmount();
+    ReactDOM.unmountComponentAtNode(div);
 });
