@@ -27,25 +27,25 @@ it('has a text area and a button', () => {
  * 5. Assert that the textarea's value has changed
  */
 
-it('has a text area that users can type in', () => {
-    const simulatedValue = 'new comment';
-    wrapped.find('textarea').simulate('change', {
-        target: { value: simulatedValue }
-    });
-    wrapped.update();
+describe('the text area', () => {
 
-    expect(wrapped.find('textarea').prop('value')).toEqual(simulatedValue);
+    const simulatedValue = 'new comment';
+
+    beforeEach(() => {
+        wrapped.find('textarea').simulate('change', {
+            target: { value: simulatedValue }
+        });
+        wrapped.update();
+    });
+
+    it('has a text area that users can type in', () => {
+        expect(wrapped.find('textarea').prop('value')).toEqual(simulatedValue);
+    });
+
+    it('when form is submitted, text area gets emptied', () => {
+        wrapped.find('form').simulate('submit');
+        wrapped.update();
+        expect(wrapped.find('textarea').prop('value')).toEqual('');
+    });
+
 });
-
-it('when form is submitted, text area gets emptied', () => {
-    const simulatedValue = 'new comment';
-    wrapped.find('textarea').simulate('change', {
-        target: { value: simulatedValue }
-    });
-    wrapped.update();
-
-    wrapped.find('form').simulate('submit');
-    wrapped.update();
-
-    expect(wrapped.find('textarea').prop('value')).toEqual('');
-})
