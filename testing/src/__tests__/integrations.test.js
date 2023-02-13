@@ -35,7 +35,7 @@ it('can fetch a list of comments and display them', (done) => {
     wrapped.find('.fetch-comments-btn').simulate('click');
 
     // Introduce a *pause* for async action
-    setTimeout(() => {
+    moxios.wait(() => {
         // we must tell our app to update itself
         wrapped.update();
 
@@ -44,5 +44,5 @@ it('can fetch a list of comments and display them', (done) => {
 
         done(); // test checks only after done() function is called
         wrapped.unmount(); // cleanup
-    }, 100);
+    });
 });
