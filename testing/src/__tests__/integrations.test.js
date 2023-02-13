@@ -5,7 +5,7 @@ import Root from '../root';
 import App from '../components/App';
 
 beforeEach(() => {
-     // turn off any requests by axios
+    // turn off any requests by axios
     moxios.install();
     // intercept call and respond with mock data
     moxios.stubRequest('http://jsonplaceholder.typicode.com/comments', {
@@ -23,7 +23,7 @@ afterEach(() => {
     moxios.uninstall();
 });
 
-it('can fetch a list of comments and display them', () => {
+it('can fetch a list of comments and display them', (done) => {
     // Attempt to render the *entire* app
     const wrapped = mount(
         <Root>
@@ -34,6 +34,15 @@ it('can fetch a list of comments and display them', () => {
     // Find the 'fetchComments' button and click it
     wrapped.find('.fetch-comments-btn').simulate('click');
 
-    // Expect to find a list of comments!
-    expect(wrapped.find('li').length).toEqual(2);
-})
+    // Introduce a *pause* for async action
+    setTimeout(() => {
+        // we must tell our app to update itself
+        wrapped.update();
+
+        // do the actual expectation
+        expect(wrapped.find('li').length).toEqual(2);
+
+        done(); // test checks only after done() function is called
+        wrapped.unmount(); // cleanup
+    }, 100);
+});
