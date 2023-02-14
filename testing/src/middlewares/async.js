@@ -17,4 +17,14 @@ export default ({ dispatch }) => next => action => {
     if (!action.payload || !action.payload.then) {
         return next(action);
     }
+
+    /**
+     * We want to wait for the promise to resolve (get its data)
+     * and then create a new action with that data and dispatch it.
+     * In other words, we overwrite payload/Promise with data returned from that Promise.
+     */
+    action.payload.then(function(response) {
+        const newAction = { ...action, payload: response };
+        dispatch(newAction);
+    });
 };
