@@ -9,5 +9,12 @@ export default function({ dispatch }) {
 */
 
 export default ({ dispatch }) => next => action => {
-
+    /**
+     * Check to see if the action has a Promise on its 'payload' property.
+     * If it does, than wait for it to resolve.
+     * If it doesn't, then send the action on to the next middleware.
+     */
+    if (!action.payload || !action.payload.then) {
+        return next(action);
+    }
 };
